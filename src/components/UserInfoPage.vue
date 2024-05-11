@@ -20,7 +20,7 @@
             <div v-if="UserInfoWindow === 'secure'" id="show_1">
                 <div style="font-weight: bold;font-size: 20px;margin: 20px">|登录方式</div>
                 <ul>
-                    <li id="find_phone">
+                    <li id="find_phone" @click="toUserFunction('phone')">
                         <div class="li_div"><img src="../assets/phone_ico.png" alt="" class="li_img">安全手机</div>
                         <div class="li_div">
                             <p v-if="UPhoneNmber === null">暂未绑定</p>
@@ -28,7 +28,7 @@
                             <img src="../assets/Arrowright.png" alt="" class="li_img">
                         </div>
                     </li>
-                    <li id="find_email">
+                    <li id="find_email" @click="toUserFunction('email')">
                         <div class="li_div"><img src="../assets/Mailbox_icon.png" alt="" class="li_img">安全邮箱</div>
                         <div class="li_div">
                             <p v-if="UMailBox === null">暂未绑定</p>
@@ -36,7 +36,7 @@
                             <img src="../assets/Arrowright.png" alt="" class="li_img">
                         </div>
                     </li>
-                    <li id="modify_pwd">
+                    <li id="modify_pwd" @click="toUserFunction('password')">
                         <div class="li_div"><img src="../assets/modify_PWD.png" alt="" class="li_img">修改密码</div>
                         <div class="li_div"><img src="../assets/Arrowright.png" alt="" class="li_img"></div>
                     </li>
@@ -92,11 +92,79 @@
                     </ul>
                 </div>
 
-                <button id="add_address_btn" class="add_address_btn_class">添加地址</button>
+                <button id="add_address_btn" class="add_address_btn_class" @click="toUserFunction('addSite')">添加地址</button>
             </div>
             <!-- 收货地址END -->
         </div>
     </div>
+    <!-- 修改手机号 -->
+    <div v-if="UserFunction === 'phone'" id="find_phone_div">
+        <div @click="toUserFunction('')"><img src="../assets/close.png" class="close" id="close_phone_btn" ></div>
+        <div id="find_phone_div_title">绑定安全手机</div>
+        <div id="find_phone_div_content">
+            <div>输入新手机</div>
+            <input type="text" placeholder="请输入手机号" id="phone_input">
+        </div>
+        <button id="phone_btn">确定</button>
+    </div>
+    <!-- 修改手机号END -->
+    <!-- 修改邮箱 -->
+    <div v-else-if="UserFunction === 'email'" id="find_email_div">
+        <div @click="toUserFunction('')"><img src="../assets/close.png" class="close" id="close_email_btn" ></div>
+        <div id="find_email_div_title">绑定安全邮箱</div>
+        <div id="find_email_div_content">
+            <div>输入新邮箱</div>
+            <input type="text" placeholder="请输入邮箱" id="email_input">
+        </div>
+        <button id="email_btn">确定</button>
+    </div>
+    <!-- 修改邮箱END -->
+    <!-- 修改密码 -->
+    <div v-else-if="UserFunction === 'password'" id="modify_pwd_div">
+        <div  @click="toUserFunction('')"><img src="../assets/close.png" class="close" id="close_pwd_btn" ></div>
+        <div id="modify_pwd_div_title">修改密码</div>
+        <div id="modify_pwd_div_content">
+            <div id="old_pwd_div">输入旧密码</div>
+            <input type="password" placeholder="请输入旧密码" id="old_pwd_input">
+            <div id="new_pwd_div">输入新密码</div>
+            <input type="password" placeholder="请输入新密码" id="new_pwd_input">
+            <div id="re_new_pwd_div">确认新密码</div>
+            <input type="password" placeholder="请确认新密码" id="re_new_pwd_input">
+        </div>
+        <button id="pwd_btn">确定</button>
+    </div>
+    <!-- 修改密码END -->
+    <!-- 添加收货地址 -->
+    <div v-else-if="UserFunction === 'addSite'" class="add_address_div"  id="add_address_div">
+        <div  @click="toUserFunction('')"><img src="../assets/close.png" class="close" id="close_address_btn" ></div>
+        <div class="add_address_div_title">添加地址</div>
+        <div class="add_address_div_content">
+            <div id="aname_text">输入姓名</div>
+            <input type="text" placeholder="输入姓名" :value="UNickName" id="aname_input">
+            <div id="aphone_text">输入手机号</div>
+            <input type="text" placeholder="请输入手机号" :value="UPhoneNmber"  id="aphone_input">
+            <div id="atext_text">收货地址</div>
+            <input type="text" placeholder="请填写收货地址" id="atext_input">
+        </div>
+        <button id="add_address">添加</button>
+    </div>
+    <!-- 添加收货地址END -->
+    <!-- 修改收货地址 -->
+    <div v-else-if="UserFunction === 'moSite'" class="add_address_div" id="add_address_div_x">
+        <div @click="toUserFunction('')"><img src="../assets/close.png" class="close" id="close_address_btn_x" ></div>
+        <div class="add_address_div_title">修改地址</div>
+        <div class="add_address_div_content">
+            <div id="aname_text_x">输入姓名</div>
+            <input type="text" placeholder="输入姓名" value="${USER_SESSION.getNickname()}" id="aname_input_x">
+            <div id="aphone_text_x">输入手机号</div>
+            <input type="text" placeholder="请输入手机号" value="${USER_SESSION.getUphonenumber()}" id="aphone_input_x">
+            <div id="atext_text_x">收货地址</div>
+            <input type="text" placeholder="请填写收货地址" id="atext_input_x">
+        </div>
+        <button id="x_address">修改</button>
+    </div>
+
+    <!-- 修改收货地址END -->
 </template>
 
 <script>
@@ -110,6 +178,7 @@ export default {
             UPhoneNmber:null,
             UMailBox:null,
             UserInfoWindow:"secure",
+            UserFunction:'',
             UID:"1",
             USex:null,
             Uage:null,
@@ -122,6 +191,9 @@ export default {
         toUserInfoWindow(window){
             this.UserInfoWindow = window;
         },
+        toUserFunction(fun){
+            this.UserFunction = fun;
+        }
     }
 }
 
@@ -133,7 +205,6 @@ export default {
             height: 600px;
         }
         #find_phone_div{
-            display: none;
             width: 30%;
             height: 54%;
             position: absolute;
@@ -177,7 +248,6 @@ export default {
             border-radius: 5px;
         }
         #find_email_div{
-            display: none;
             width: 30%;
             height: 54%;
             position: absolute;
@@ -220,7 +290,6 @@ export default {
             border-radius: 5px;
         }
         #modify_pwd_div{
-            display: none;
             width: 30%;
             height: 60%;
             position: absolute;
@@ -264,7 +333,6 @@ export default {
             border-radius: 5px;
         }
         .add_address_div{
-            display: none;
             width: 30%;
             height: 68%;
             position: absolute;
