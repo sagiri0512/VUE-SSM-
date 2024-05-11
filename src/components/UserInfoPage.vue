@@ -23,16 +23,16 @@
                     <li id="find_phone" @click="toUserFunction('phone')">
                         <div class="li_div"><img src="../assets/phone_ico.png" alt="" class="li_img">安全手机</div>
                         <div class="li_div">
-                            <p v-if="UPhoneNmber === null">暂未绑定</p>
-                            <p v-else>{{ UPhoneNmber }}</p>
+                            <p v-if="User.uphoneNmber === null">暂未绑定</p>
+                            <p v-else>{{ User.uphoneNmber }}</p>
                             <img src="../assets/Arrowright.png" alt="" class="li_img">
                         </div>
                     </li>
                     <li id="find_email" @click="toUserFunction('email')">
                         <div class="li_div"><img src="../assets/Mailbox_icon.png" alt="" class="li_img">安全邮箱</div>
                         <div class="li_div">
-                            <p v-if="UMailBox === null">暂未绑定</p>
-                            <p v-else>{{ UMailBox }}</p>
+                            <p v-if="User.umailBox === null">暂未绑定</p>
+                            <p v-else>{{ User.umailBox }}</p>
                             <img src="../assets/Arrowright.png" alt="" class="li_img">
                         </div>
                     </li>
@@ -50,33 +50,33 @@
                     <div class="show_2_div_body">
                         <text>头像</text>
                         <img :src="UHeadImage" id="headPath" alt="" style="width: 60px;height:60px;margin-right: 50px;border-radius: 50%">
-                        <input type="file" name="file" id="file" v-if="UNickName === null">
+                        <input type="file" name="file" id="file" v-if="User.uheadImage === null">
                     </div>
                     <div class="show_2_div_body">
                         <text>UID</text>
-                        <text>{{ UID }}</text>
+                        <text>{{ User.uid }}</text>
                     </div>
                     <div class="show_2_div_body">
                         <text>昵称</text>
-                        <text id="Nickname" v-if="UNickName === null">暂未设置</text>
-                        <text id="Nickname" v-else>{{UNickName}}</text>
-                        <input type="text" id="nickname_input" v-if="UNickName === null">
+                        <text id="Nickname" v-if="User.unickName === null">暂未设置</text>
+                        <text id="Nickname" v-else>{{User.unickName}}</text>
+                        <input type="text" id="nickname_input" v-if="User.unickName === null">
                     </div>
                     <div class="show_2_div_body">
                         <text>性别</text>
-                        <text id="sex" v-if="USex == null">暂未设置</text>
-                        <text id="sex" v-else-if="USex == 1">男</text>
-                        <text id="sex" v-else-if="USex == 0">女</text>
-                        <div v-if="UNickName === null">
+                        <text id="sex" v-if="User.usex == null">暂未设置</text>
+                        <text id="sex" v-else-if="User.usex == 1">男</text>
+                        <text id="sex" v-else-if="User.usex == 0">女</text>
+                        <div v-if="User.usex === null">
                             <label for="sex_1"  id="label_1"> <input type="radio" id="sex_1" name="sex" value="1" checked >男</label>
                             <label for="sex_0"  id="label_0"> <input type="radio" id="sex_0" name="sex" value="0" >女</label>
                         </div>
                     </div>
                     <div class="show_2_div_body">
                         <text>年龄</text>
-                        <text id="age" v-if="Uage === null"> 暂未设置 </text>
-                        <text id="age" v-else>{{Uage}}</text>
-                        <input type="text" id="age_input" v-if="Uage === null" >
+                        <text id="age" v-if="User.usex === null"> 暂未设置 </text>
+                        <text id="age" v-else>{{User.usex}}</text>
+                        <input type="text" id="age_input" v-if="User.usex === null" >
                     </div>
                 </div>
                 <div id="show_2_div_btn">
@@ -88,7 +88,12 @@
             <div v-else-if="UserInfoWindow === 'address'" id="show_3">
                 <div style="font-weight: bold;font-size: 20px;margin: 20px">|收货地址</div>
                 <div id="shou_3_overflow_scroll">
-                    <ul id="show_3_div">
+                    <ul id="show_3_div" v-for="addres of address" :key="addres.aid">
+                        <li>
+                            姓名：{{ addres.aname }}<br> 手机：{{ addres.aphonennmber }}<br> 地址：{{ addres.atext }}<br>
+                            <button>删除</button>
+                            <button>修改</button><br>
+                        </li>
                     </ul>
                 </div>
 
@@ -169,20 +174,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
     data(){
         return{
-            UNickName:null,
-            UHeadImage:null,
-            UPhoneNmber:null,
-            UMailBox:null,
+            User:{},
             UserInfoWindow:"secure",
             UserFunction:'',
-            UID:"1",
-            USex:null,
-            Uage:null,
+            address:[],
         }
+    },
+    mounted() {
+        this.getUserInfo();
     },
     computed: {
         ...mapGetters(['getUserName']),
@@ -193,13 +197,21 @@ export default {
         },
         toUserFunction(fun){
             this.UserFunction = fun;
-        }
+        },
+        /*
+        * 获取用户信息
+        * */
+       async getUserInfo(){
+            const response = await axios.get('/api/getUserInfo?uname=' + this.getUserName);
+            console.log(response.data);
+            this.User = response.data;
+       }
     }
 }
 
 </script>
 
-<style>
+<style scoped>
         body{
             background-color: #f6f6f6;
             height: 600px;
@@ -517,11 +529,46 @@ export default {
             height: 40px;
         }
         #shou_3_overflow_scroll{
-            width: 60%;
+            width: 100%;
             overflow-y: scroll;
             scrollbar-width: none;
             height: 300px;
         }
+        #show_3_div {
+            width: 95%;
+            list-style: none;
+            padding: 0;
+        }
+
+        #show_3_div li {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        #show_3_div li:hover {
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        #show_3_div li button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            margin-right: 5px;
+            width: 20%; /* 让按钮占据 li 的 50% 宽度（减去 margin-right） */
+        }
+
+        #show_3_div li button:hover {
+            background-color: #0056b3;
+            cursor: pointer;
+        }
+        
         .show_3_div_body{
             border: 1px solid #76d243;
             border-radius: 5px;
@@ -544,7 +591,7 @@ export default {
             overflow: hidden;
         }
         .add_address_btn_class{
-            margin-left: 130px;
+            margin-left: 3%;
             margin-top: 20px;
             width: 40%;
             height: 40px;
