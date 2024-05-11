@@ -5,58 +5,125 @@
             <!-- 头像 -->
             <div id="body_div_left_top">
                 <img :src="UHeadImage">
-                <text>{{ UNickName }}</text>
+                <text>{{ getUserName }}</text>
             </div>
             <div id="body_div_left_bottom">
-                <div id="check_1">登录与安全</div>
-                <div id="check_2">个人信息</div>
-                <div id="check_3">收货地址</div>
+                <div id="check_1" @click="toUserInfoWindow('secure')">登录与安全</div>
+                <div id="check_2" @click="toUserInfoWindow('info')">个人信息</div>
+                <div id="check_3" @click="toUserInfoWindow('address')">收货地址</div>
             </div>
         </div>
         <!-- 左侧导航END -->
         <!-- 右侧内容栏 -->
         <div id="body_div_right">
-            <!-- 登录方式 -->
-            <div id="show_1">
-            <div style="font-weight: bold;font-size: 20px;margin: 20px">|登录方式</div>
-            <ul>
-                <li id="find_phone">
-                    <div class="li_div"><img src="../assets/phone_ico.png" alt="" class="li_img">安全手机</div>
-                    <div class="li_div">
-                        <p v-if="UPhoneNmber === null">暂未绑定</p>
-                        <p v-else>{{ UPhoneNmber }}</p>
-                        <img src="../assets/Arrowright.png" alt="" class="li_img">
+            <!-- 安全 -->
+            <div v-if="UserInfoWindow === 'secure'" id="show_1">
+                <div style="font-weight: bold;font-size: 20px;margin: 20px">|登录方式</div>
+                <ul>
+                    <li id="find_phone">
+                        <div class="li_div"><img src="../assets/phone_ico.png" alt="" class="li_img">安全手机</div>
+                        <div class="li_div">
+                            <p v-if="UPhoneNmber === null">暂未绑定</p>
+                            <p v-else>{{ UPhoneNmber }}</p>
+                            <img src="../assets/Arrowright.png" alt="" class="li_img">
+                        </div>
+                    </li>
+                    <li id="find_email">
+                        <div class="li_div"><img src="../assets/Mailbox_icon.png" alt="" class="li_img">安全邮箱</div>
+                        <div class="li_div">
+                            <p v-if="UMailBox === null">暂未绑定</p>
+                            <p v-else>{{ UMailBox }}</p>
+                            <img src="../assets/Arrowright.png" alt="" class="li_img">
+                        </div>
+                    </li>
+                    <li id="modify_pwd">
+                        <div class="li_div"><img src="../assets/modify_PWD.png" alt="" class="li_img">修改密码</div>
+                        <div class="li_div"><img src="../assets/Arrowright.png" alt="" class="li_img"></div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 安全END -->
+            <!-- 个人信息 -->
+            <div v-if="UserInfoWindow === 'info'" id="show_2">
+                <div style="font-weight: bold;font-size: 20px;margin: 20px">|个人信息</div>
+                <div id="show_2_div">
+                    <div class="show_2_div_body">
+                        <text>头像</text>
+                        <img :src="UHeadImage" id="headPath" alt="" style="width: 60px;height:60px;margin-right: 50px;border-radius: 50%">
+                        <input type="file" name="file" id="file" v-if="UNickName === null">
                     </div>
-                </li>
-                <li id="find_email">
-                    <div class="li_div"><img src="../assets/Mailbox_icon.png" alt="" class="li_img">安全邮箱</div>
-                    <div class="li_div">
-                        <p v-if="UMailBox === null">暂未绑定</p>
-                        <p v-else>{{ UMailBox }}</p>
-                        <img src="../assets/Arrowright.png" alt="" class="li_img">
+                    <div class="show_2_div_body">
+                        <text>UID</text>
+                        <text>{{ UID }}</text>
                     </div>
-                </li>
-                <li id="modify_pwd">
-                    <div class="li_div"><img src="../assets/modify_PWD.png" alt="" class="li_img">修改密码</div>
-                    <div class="li_div"><img src="../assets/Arrowright.png" alt="" class="li_img"></div>
-                </li>
-            </ul>
-        </div>
-            <!-- 登录方式END -->
+                    <div class="show_2_div_body">
+                        <text>昵称</text>
+                        <text id="Nickname" v-if="UNickName === null">暂未设置</text>
+                        <text id="Nickname" v-else>{{UNickName}}</text>
+                        <input type="text" id="nickname_input" v-if="UNickName === null">
+                    </div>
+                    <div class="show_2_div_body">
+                        <text>性别</text>
+                        <text id="sex" v-if="USex == null">暂未设置</text>
+                        <text id="sex" v-else-if="USex == 1">男</text>
+                        <text id="sex" v-else-if="USex == 0">女</text>
+                        <div v-if="UNickName === null">
+                            <label for="sex_1"  id="label_1"> <input type="radio" id="sex_1" name="sex" value="1" checked >男</label>
+                            <label for="sex_0"  id="label_0"> <input type="radio" id="sex_0" name="sex" value="0" >女</label>
+                        </div>
+                        
+                    </div>
+                    <div class="show_2_div_body">
+                        <text>年龄</text>
+                        <text id="age" v-if="Uage === null"> 暂未设置 </text>
+                        <text id="age" v-else>{{Uage}}</text>
+                        <input type="text" id="age_input" v-if="Uage === null" >
+                    </div>
+                </div>
+                <div id="show_2_div_btn">
+                    <button id="modify_info_btn"><span id="info_btn_text">修改个人信息</span></button>
+                </div>
+            </div>
+            <!-- 个人信息END -->
+            <!-- 收货地址 -->
+            <div v-else-if="UserInfoWindow === 'address'" id="show_3">
+                <div style="font-weight: bold;font-size: 20px;margin: 20px">|收货地址</div>
+                <div id="shou_3_overflow_scroll">
+                    <ul id="show_3_div">
+                    </ul>
+                </div>
+
+                <button id="add_address_btn" class="add_address_btn_class">添加地址</button>
+            </div>
+            <!-- 收货地址END -->
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     data(){
         return{
-            UNickName:"",
-            UHeadImage:"",
-            UPhoneNmber:"",
-            UMailBox:"",
+            UNickName:null,
+            UHeadImage:null,
+            UPhoneNmber:null,
+            UMailBox:null,
+            UserInfoWindow:"secure",
+            UID:"1",
+            USex:null,
+            Uage:null,
         }
     },
+    computed: {
+        ...mapGetters(['getUserName']),
+    },
+    methods:{
+        toUserInfoWindow(window){
+            this.UserInfoWindow = window;
+        },
+    }
 }
 
 </script>
@@ -368,7 +435,7 @@ export default {
             flex-direction: row;
         }
         #modify_info_btn{
-            margin:0 20%;
+            margin:0 26%;
             width: 20%;
             height: 40px;
             background-color: #76d243;
