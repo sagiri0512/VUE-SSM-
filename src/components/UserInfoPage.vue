@@ -71,7 +71,6 @@
                             <label for="sex_1"  id="label_1"> <input type="radio" id="sex_1" name="sex" value="1" checked >男</label>
                             <label for="sex_0"  id="label_0"> <input type="radio" id="sex_0" name="sex" value="0" >女</label>
                         </div>
-                        
                     </div>
                     <div class="show_2_div_body">
                         <text>年龄</text>
