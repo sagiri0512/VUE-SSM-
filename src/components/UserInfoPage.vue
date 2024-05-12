@@ -93,7 +93,7 @@
                             姓名：{{ addres.aname }}<br> 手机：{{ addres.aphonenNmber }}<br> 地址：{{ addres.atext }}<br>
                             <div style="margin-top: 15px;">
                                 <button>删除</button>
-                                <button>修改</button><br>
+                                <button @click="toUpdateAddress(addres, 'moSite')">修改</button><br>
                             </div>
                         </li>
                     </ul>
@@ -168,7 +168,7 @@
             <div id="atext_text_x">收货地址</div>
             <input type="text" placeholder="请填写收货地址" v-model="newAddress.atext" id="atext_input_x">
         </div>
-        <button id="x_address">修改</button>
+        <button id="x_address" @click="updateAddress(newAddress)">修改</button>
     </div>
 
     <!-- 修改收货地址END -->
@@ -187,6 +187,7 @@ export default {
             address:[],
             newAPhoneNmber:"",
             newAddress:{
+                'aid':null,
                 'aname':'',
                 'aphonenNmber':'',
                 'atext':''
@@ -195,7 +196,7 @@ export default {
             newUEmail:'',
             oldPWD:'',
             newPWD:'',
-            reNewPWD:''
+            reNewPWD:'',
         }
     },
     mounted() {
@@ -266,6 +267,20 @@ export default {
                 alert("请输入完整信息");
             }else{
                 alert("旧密码错误");
+            }
+       },
+       toUpdateAddress(addres, window){
+            this.UserFunction = window;
+            this.newAddress = addres;
+       },
+       async updateAddress(){
+            const response = await axios.post('/api/updateAddress', this.newAddress);
+            if(response.data === 1){
+                alert("修改成功");
+                this.getUserAddress();
+                this.toUserFunction('');
+            }else{
+                alert("修改失败");
             }
        },
     }
