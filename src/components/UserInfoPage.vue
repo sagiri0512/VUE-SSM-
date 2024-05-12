@@ -131,14 +131,14 @@
         <div  @click="toUserFunction('')"><img src="../assets/close.png" class="close" id="close_pwd_btn" ></div>
         <div id="modify_pwd_div_title">修改密码</div>
         <div id="modify_pwd_div_content">
-            <div id="old_pwd_div">输入旧密码</div>
-            <input type="password" placeholder="请输入旧密码" id="old_pwd_input">
+            <div id="old_pwd_div"  >输入旧密码</div>
+            <input type="password" placeholder="请输入旧密码" id="old_pwd_input" v-model="oldPWD">
             <div id="new_pwd_div">输入新密码</div>
-            <input type="password" placeholder="请输入新密码" id="new_pwd_input">
+            <input type="password" placeholder="请输入新密码" id="new_pwd_input" v-model="newPWD">
             <div id="re_new_pwd_div">确认新密码</div>
-            <input type="password" placeholder="请确认新密码" id="re_new_pwd_input">
+            <input type="password" placeholder="请确认新密码" id="re_new_pwd_input" v-model="reNewPWD">
         </div>
-        <button id="pwd_btn">确定</button>
+        <button id="pwd_btn" @click="pwdChange()">确定</button>
     </div>
     <!-- 修改密码END -->
     <!-- 添加收货地址 -->
@@ -192,7 +192,10 @@ export default {
                 'atext':''
             },
             newUPhoneNmber:'',
-            newUEmail:''
+            newUEmail:'',
+            oldPWD:'',
+            newPWD:'',
+            reNewPWD:''
         }
     },
     mounted() {
@@ -236,6 +239,33 @@ export default {
                 this.getUserInfo();
             }else{
                 alert("修改失败");
+            }
+       },
+       async pwdChange(){
+        const pwd = this.User.upwd;
+
+        console.log(pwd);
+            if(this.newPWD !== this.reNewPWD){
+                alert("两次密码不一致");
+            }else if(this.newPWD === this.User.upwd){
+                alert("新密码不能与旧密码一致");
+            }else if(this.oldPWD === pwd){
+                const data = {
+                    'uname':this.getUserName,
+                    'upwd':this.newPWD
+                }
+                const response = await axios.post('/api/pwdChange', data);
+                if(response.data === 1){
+                    alert("修改成功");
+                    this.$store.commit('updateUserName', '');
+                    this.$store.commit('updateWindow', 'home');
+                }else{
+                    alert("修改失败");
+                }
+            }else if(this.oldPWD === '' || this.newPWD === '' || this.reNewPWD === ''){
+                alert("请输入完整信息");
+            }else{
+                alert("旧密码错误");
             }
        },
     }

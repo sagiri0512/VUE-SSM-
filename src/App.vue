@@ -82,9 +82,11 @@ export default {
     iSs(){
       if(this.getUserName !== ''){
         this.updateNum();
+      }else{
+        this.$store.commit('updateNum', 0);
       }
       return this.getUserName !== '';
-    }
+    },
   },
   mounted() {
 
