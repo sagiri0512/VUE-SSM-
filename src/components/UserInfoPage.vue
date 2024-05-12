@@ -90,9 +90,11 @@
                 <div id="shou_3_overflow_scroll">
                     <ul id="show_3_div" v-for="addres of address" :key="addres.aid">
                         <li>
-                            姓名：{{ addres.aname }}<br> 手机：{{ addres.aphonennmber }}<br> 地址：{{ addres.atext }}<br>
-                            <button>删除</button>
-                            <button>修改</button><br>
+                            姓名：{{ addres.aname }}<br> 手机：{{ addres.aphonenNmber }}<br> 地址：{{ addres.atext }}<br>
+                            <div style="margin-top: 15px;">
+                                <button>删除</button>
+                                <button>修改</button><br>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -108,9 +110,9 @@
         <div id="find_phone_div_title">绑定安全手机</div>
         <div id="find_phone_div_content">
             <div>输入新手机</div>
-            <input type="text" placeholder="请输入手机号" id="phone_input">
+            <input type="text" placeholder="请输入手机号" id="phone_input" v-model="newUPhoneNmber">
         </div>
-        <button id="phone_btn">确定</button>
+        <button id="phone_btn" @click="phoneChange()">确定</button>
     </div>
     <!-- 修改手机号END -->
     <!-- 修改邮箱 -->
@@ -145,11 +147,11 @@
         <div class="add_address_div_title">添加地址</div>
         <div class="add_address_div_content">
             <div id="aname_text">输入姓名</div>
-            <input type="text" placeholder="输入姓名" :value="UNickName" id="aname_input">
+            <input type="text" placeholder="输入姓名" v-model="newAddress.aname" id="aname_input">
             <div id="aphone_text">输入手机号</div>
-            <input type="text" placeholder="请输入手机号" :value="UPhoneNmber"  id="aphone_input">
+            <input type="text" placeholder="请输入手机号" v-model="newAddress.aphonenNmber"  id="aphone_input">
             <div id="atext_text">收货地址</div>
-            <input type="text" placeholder="请填写收货地址" id="atext_input">
+            <input type="text" placeholder="请填写收货地址" v-model="newAddress.atext" id="atext_input">
         </div>
         <button id="add_address">添加</button>
     </div>
@@ -160,11 +162,11 @@
         <div class="add_address_div_title">修改地址</div>
         <div class="add_address_div_content">
             <div id="aname_text_x">输入姓名</div>
-            <input type="text" placeholder="输入姓名" value="${USER_SESSION.getNickname()}" id="aname_input_x">
+            <input type="text" placeholder="输入姓名" v-model="newAddress.aname" id="aname_input_x">
             <div id="aphone_text_x">输入手机号</div>
-            <input type="text" placeholder="请输入手机号" value="${USER_SESSION.getUphonenumber()}" id="aphone_input_x">
+            <input type="text" placeholder="请输入手机号" v-model="newAddress.aphonenNmber" id="aphone_input_x">
             <div id="atext_text_x">收货地址</div>
-            <input type="text" placeholder="请填写收货地址" id="atext_input_x">
+            <input type="text" placeholder="请填写收货地址" v-model="newAddress.atext" id="atext_input_x">
         </div>
         <button id="x_address">修改</button>
     </div>
@@ -183,10 +185,18 @@ export default {
             UserInfoWindow:"secure",
             UserFunction:'',
             address:[],
+            newAPhoneNmber:"",
+            newAddress:{
+                'aname':'',
+                'aphonenNmber':'',
+                'atext':''
+            },
+            newUPhoneNmber:'',
         }
     },
     mounted() {
         this.getUserInfo();
+        this.getUserAddress();
     },
     computed: {
         ...mapGetters(['getUserName']),
@@ -203,9 +213,22 @@ export default {
         * */
        async getUserInfo(){
             const response = await axios.get('/api/getUserInfo?uname=' + this.getUserName);
-            console.log(response.data);
             this.User = response.data;
-       }
+       },
+       async getUserAddress(){
+            const response = await axios.get('/api/getAddressByUName?uname=' + this.getUserName);
+            this.address = response.data;
+       },
+       async phoneChange(){
+            const response = await axios.get('/api/phoneChange?uname=' + this.getUserName + '&phone=' + this.newUPhoneNmber);
+            console.log(response.data);
+            if(response.data === 1){
+                alert("修改成功");
+                this.getUserInfo();
+            }else{
+                alert("修改失败");
+            }
+       },
     }
 }
 
