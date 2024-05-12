@@ -121,9 +121,9 @@
         <div id="find_email_div_title">绑定安全邮箱</div>
         <div id="find_email_div_content">
             <div>输入新邮箱</div>
-            <input type="text" placeholder="请输入邮箱" id="email_input">
+            <input type="text" placeholder="请输入邮箱" id="email_input" v-model="newUEmail">
         </div>
-        <button id="email_btn">确定</button>
+        <button id="email_btn" @click="emailChange()">确定</button>
     </div>
     <!-- 修改邮箱END -->
     <!-- 修改密码 -->
@@ -192,6 +192,7 @@ export default {
                 'atext':''
             },
             newUPhoneNmber:'',
+            newUEmail:''
         }
     },
     mounted() {
@@ -221,7 +222,15 @@ export default {
        },
        async phoneChange(){
             const response = await axios.get('/api/phoneChange?uname=' + this.getUserName + '&phone=' + this.newUPhoneNmber);
-            console.log(response.data);
+            if(response.data === 1){
+                alert("修改成功");
+                this.getUserInfo();
+            }else{
+                alert("修改失败");
+            }
+       },
+       async emailChange(){
+            const response = await axios.get('/api/emailChange?uname=' + this.getUserName + '&email=' + this.newUEmail);
             if(response.data === 1){
                 alert("修改成功");
                 this.getUserInfo();
