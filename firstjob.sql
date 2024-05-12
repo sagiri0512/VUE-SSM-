@@ -21,15 +21,18 @@ USE `firstjob`;
 DROP TABLE IF EXISTS `address`;
 
 CREATE TABLE `address` (
-  `AID` int NOT NULL,
+  `AID` int NOT NULL AUTO_INCREMENT,
   `UID` int NOT NULL,
   `AText` varchar(500) DEFAULT NULL,
   `APhonenNmber` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `AName` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`AID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `address` */
+
+insert  into `address`(`AID`,`UID`,`AText`,`APhonenNmber`,`AName`) values 
+(1,1,'江苏省南京市东极大道1号江苏软件园','12121212121','sagiri');
 
 /*Table structure for table `carousel` */
 
