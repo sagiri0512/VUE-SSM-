@@ -16,6 +16,21 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`firstjob` /*!40100 DEFAULT CHARACTER SE
 
 USE `firstjob`;
 
+/*Table structure for table `address` */
+
+DROP TABLE IF EXISTS `address`;
+
+CREATE TABLE `address` (
+  `AID` int NOT NULL,
+  `UID` int NOT NULL,
+  `AText` varchar(500) DEFAULT NULL,
+  `APhonenNmber` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `AName` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`AID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `address` */
+
 /*Table structure for table `carousel` */
 
 DROP TABLE IF EXISTS `carousel`;
@@ -132,15 +147,21 @@ CREATE TABLE `user` (
   `UID` int NOT NULL AUTO_INCREMENT,
   `UName` char(20) NOT NULL,
   `UPWD` char(15) NOT NULL,
+  `UPhoneNmber` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Usex` int DEFAULT NULL,
+  `Uage` int DEFAULT NULL,
+  `UHeadImage` varchar(500) DEFAULT NULL,
+  `UMailBox` varchar(500) DEFAULT NULL,
+  `UNickName` char(20) DEFAULT NULL,
   PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `user` */
 
-insert  into `user`(`UID`,`UName`,`UPWD`) values 
-(1,'sagiri','123456'),
-(2,'sbzcy','123456'),
-(3,'sbzyj','123456');
+insert  into `user`(`UID`,`UName`,`UPWD`,`UPhoneNmber`,`Usex`,`Uage`,`UHeadImage`,`UMailBox`,`UNickName`) values 
+(1,'sagiri','123456','12121212121',1,10,NULL,'1111@qq.com','sagiri'),
+(2,'sbzcy','123456',NULL,NULL,NULL,NULL,NULL,NULL),
+(3,'sbzyj','123456',NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
