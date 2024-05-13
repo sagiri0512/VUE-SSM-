@@ -50,7 +50,7 @@
                     <div class="show_2_div_body">
                         <text>头像</text>
                         <img :src="User.uheadImage" id="headPath" alt="" style="width: 60px;height:60px;margin-right: 50px;border-radius: 50%">
-                        <input type="file" name="file" id="file" >
+                        <input type="file" name="file" id="file" @change="handleFileUpload" >
                     </div>
                     <div class="show_2_div_body">
                         <text>UID</text>
@@ -60,27 +60,31 @@
                         <text>昵称</text>
                         <text id="Nickname" v-if="User.unickName === null">暂未设置</text>
                         <text id="Nickname" v-else>{{User.unickName}}</text>
-                        <input type="text" id="nickname_input" v-if="User.unickName === null">
+                        <input type="text" id="nickname_input" v-model.lazy="UserInfo.unickName">
                     </div>
                     <div class="show_2_div_body">
                         <text>性别</text>
                         <text id="sex" v-if="User.usex == null">暂未设置</text>
                         <text id="sex" v-else-if="User.usex == 1">男</text>
                         <text id="sex" v-else-if="User.usex == 0">女</text>
-                        <div v-if="User.usex === null">
-                            <label for="sex_1"  id="label_1"> <input type="radio" id="sex_1" name="sex" value="1" checked >男</label>
-                            <label for="sex_0"  id="label_0"> <input type="radio" id="sex_0" name="sex" value="0" >女</label>
+                        <div>
+                            <label for="sex_1">
+                                    <input type="radio" id="sex_1" name="sex" value="1" v-model="UserInfo.usex"> 男
+                            </label>
+                            <label for="sex_0">
+                                <input type="radio" id="sex_0" name="sex" value="0" v-model="UserInfo.usex"> 女
+                            </label>
                         </div>
                     </div>
                     <div class="show_2_div_body">
                         <text>年龄</text>
                         <text id="age" v-if="User.usex === null"> 暂未设置 </text>
-                        <text id="age" v-else>{{User.usex}}</text>
-                        <input type="text" id="age_input" v-if="User.usex === null" >
+                        <text id="age" v-else>{{User.uage}}</text>
+                        <input type="text" id="age_input" v-model.lazy="UserInfo.uage">
                     </div>
                 </div>
                 <div id="show_2_div_btn">
-                    <button id="modify_info_btn"><span id="info_btn_text">修改个人信息</span></button>
+                    <button id="modify_info_btn" @click="modifyInfo()"><span id="info_btn_text">修改个人信息</span></button>
                 </div>
             </div>
             <!-- 个人信息END -->
@@ -181,22 +185,28 @@ import axios from 'axios';
 export default {
     data(){
         return{
-            User:{},
-            UserInfoWindow:"secure",
-            UserFunction:'',
-            address:[],
-            newAPhoneNmber:"",
+            User:{},//用户信息
+            UserInfoWindow:"secure",//用户信息窗口
+            UserFunction:'',//用户功能
+            address:[],//收货地址
+            UserInfo:{
+                'uage':null,
+                'usex':null,
+                'unickName':null,
+                'selectedFile':null//换头像
+            },//用户信息
             newAddress:{
                 'aid':null,
                 'aname':'',
                 'aphonenNmber':'',
                 'atext':''
-            },
-            newUPhoneNmber:'',
-            newUEmail:'',
-            oldPWD:'',
-            newPWD:'',
-            reNewPWD:'',
+            },//添加或修改地址
+            newUPhoneNmber:'',//改手机
+            newUEmail:'',//改邮箱
+            oldPWD:'',//改密码旧密码
+            newPWD:'',//改密码新密码
+            reNewPWD:'',//改密码确认密码
+            
         }
     },
     mounted() {
@@ -207,6 +217,47 @@ export default {
         ...mapGetters(['getUserName']),
     },
     methods:{
+        async modifyInfo(){
+            
+            var item = "";
+            alert(this.UserInfo.unickName)
+            if(this.UserInfo.unickName !== null && this.UserInfo.unickName !== ''){
+                const response = await axios.get('/api/updateUserNickName?unickname=' + this.UserInfo.unickName + '&uname=' + this.getUserName);
+                if(response.data == 1){
+                    item += "昵称,";
+                    this.UserInfo.unickName = null;
+                }
+            }
+            alert(this.UserInfo.uage)
+            if(this.UserInfo.uage !== null && this.UserInfo.uage !== ''){
+                const response = await axios.get('/api/updateUserAgeByUName?uage=' + this.UserInfo.uage + '&uname=' + this.getUserName);
+                if(response.data == 1){
+                    item += "年龄,";
+                    this.UserInfo.uage = null;
+                }
+            }
+            alert(this.UserInfo.usex)
+            if(this.UserInfo.usex !== null && this.UserInfo.usex !== ''){
+                const response = await axios.get('/api/updateUserSexByUName?usex=' + this.UserInfo.usex + '&uname=' + this.getUserName);
+                if(response.data == 1){
+                    item += "性别,";
+                    this.UserInfo.usex = null;
+                }
+            }
+            if(item === ''){
+                alert("失败");
+            }else{
+                alert(item + "修改成功");
+            }
+            this.getUserInfo();
+
+        },
+        handleFileUpload(event) {
+            // 获取用户选择的文件
+            const selectedFile = event.target.files[0];
+            // 可以将文件保存到组件的数据中，以便后续使用
+            this.UserInfo.selectedFile = selectedFile;
+        },
         toUserInfoWindow(window){
             this.UserInfoWindow = window;
         },
