@@ -4,7 +4,7 @@
         <div id="body_div_left">
             <!-- 头像 -->
             <div id="body_div_left_top">
-                <img :src="UHeadImage">
+                <img :src="User.uheadImage">
                 <text>{{ getUserName }}</text>
             </div>
             <div id="body_div_left_bottom">
@@ -49,8 +49,8 @@
                 <div id="show_2_div">
                     <div class="show_2_div_body">
                         <text>头像</text>
-                        <img :src="UHeadImage" id="headPath" alt="" style="width: 60px;height:60px;margin-right: 50px;border-radius: 50%">
-                        <input type="file" name="file" id="file" v-if="User.uheadImage === null">
+                        <img :src="User.uheadImage" id="headPath" alt="" style="width: 60px;height:60px;margin-right: 50px;border-radius: 50%">
+                        <input type="file" name="file" id="file" >
                     </div>
                     <div class="show_2_div_body">
                         <text>UID</text>
