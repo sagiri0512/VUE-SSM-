@@ -218,14 +218,12 @@ export default {
     },
     methods:{
         async modifyInfo(){
-            alert(this.getUserName);
             var item = "";
             if(this.UserInfo.unickName !== null && this.UserInfo.unickName !== ''){
                 const response = await axios.get('/api/updateUserNickName?unickname=' + this.UserInfo.unickName + '&uname=' + this.getUserName);
                 if(response.data == 1){
                     item += "昵称,";
                     this.UserInfo.unickName = null;
-                    this.getUserInfo();
                 }
             }
             if(this.UserInfo.uage !== null && this.UserInfo.uage !== ''){
@@ -233,7 +231,6 @@ export default {
                 if(response.data == 1){
                     item += "年龄,";
                     this.UserInfo.uage = null;
-                    this.getUserInfo();
                 }
             }
             if(this.UserInfo.usex !== null && this.UserInfo.usex !== ''){
@@ -241,18 +238,12 @@ export default {
                 if(response.data == 1){
                     item += "性别,";
                     this.UserInfo.usex = null;
-                    this.getUserInfo();
                 }
             }
             if (this.UserInfo.selectedFile) {
                 const formData = new FormData();
                 formData.append('uid', this.User.uid);
                 formData.append('selectedFile', this.UserInfo.selectedFile);
-
-                // 确认 formData 对象已正确构建
-                console.log('FormData:', formData.get("selectedFile"));
-
-                // 发送 axios 请求
                 try {
                     const options = {
                     method: 'POST',
@@ -263,9 +254,10 @@ export default {
 
                     if (response.data == 1) {
                         item += "头像,";
-                        this.UserInfo.selectedFile = null;
+                        alert(this.User.uheadImage);
                         const timestamp = new Date().getTime();
-                        this.User.uheadImage += `?timestamp=${timestamp}`;
+                        this.User.uheadImage += '?timestamp=' + timestamp;
+                        alert(this.User.uheadImage);
                     }
                 } catch (error) {
                     console.error('请求失败', error);
@@ -275,15 +267,11 @@ export default {
                 alert("失败");
             }else{
                 alert(item + "修改成功");
-                alert(this.User.uheadImage);
+                this.getUserInfo();
             }
-           
-
         },
         handleFileUpload(event) {
-            // 获取用户选择的文件
             const selectedFile = event.target.files[0];
-            // 可以将文件保存到组件的数据中，以便后续使用
             this.UserInfo.selectedFile = selectedFile;
         },
         toUserInfoWindow(window){
@@ -292,14 +280,9 @@ export default {
         toUserFunction(fun){
             this.UserFunction = fun;
         },
-        /*
-        * 获取用户信息
-        * */
        async getUserInfo(){
             const response = await axios.get('/api/getUserInfo?uname=' + this.getUserName);
             this.User = response.data;
-            const timestamp = new Date().getTime();
-            this.User.uheadImage += `?timestamp=${timestamp}`;
        },
        async getUserAddress(){
             const response = await axios.get('/api/getAddressByUName?uname=' + this.getUserName);
