@@ -92,7 +92,7 @@
                         <li>
                             姓名：{{ addres.aname }}<br> 手机：{{ addres.aphonenNmber }}<br> 地址：{{ addres.atext }}<br>
                             <div style="margin-top: 15px;">
-                                <button>删除</button>
+                                <button @click="deleteAddress(addres.aid)">删除</button>
                                 <button @click="toUpdateAddress(addres, 'moSite')">修改</button><br>
                             </div>
                         </li>
@@ -153,7 +153,7 @@
             <div id="atext_text">收货地址</div>
             <input type="text" placeholder="请填写收货地址" v-model="newAddress.atext" id="atext_input">
         </div>
-        <button id="add_address">添加</button>
+        <button id="add_address" @click="addAddress()">添加</button>
     </div>
     <!-- 添加收货地址END -->
     <!-- 修改收货地址 -->
@@ -281,6 +281,31 @@ export default {
                 this.toUserFunction('');
             }else{
                 alert("修改失败");
+            }
+       },
+       async addAddress(){
+            const address = {
+                'aname':this.newAddress.aname,
+                'aphonenNmber':this.newAddress.aphonenNmber,
+                'atext':this.newAddress.atext,
+                'uid':this.User.uid
+            };
+            const response = await axios.post('/api/addAddress', address);
+            if(response.data === 1){
+                alert("添加成功");
+                this.getUserAddress();
+                this.toUserFunction('');
+            }else{
+                alert("添加失败");
+            }
+       },
+       async deleteAddress(aid){
+            const response = await axios.get('/api/deleteAddress?aid=' + aid);
+            if(response.data === 1){
+                alert("删除成功");
+                this.getUserAddress();
+            }else{
+                alert("删除失败");
             }
        },
     }
