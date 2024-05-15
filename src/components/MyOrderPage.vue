@@ -24,6 +24,7 @@
         <div class="table-cell1">￥{{ item.payPrice }}</div>
         <div class="table-cell1"><button class="confirm-button" @click="changestatus(item, index)">{{Receivingstatus[item.state]}}</button></div>
     </div>
+    <div v-if="Is"></div>
 </template>
 
 <script>
@@ -40,7 +41,13 @@ export default{
         this.getOrder();
     },
     computed:{
-        ...mapGetters(["getUserName"]),
+        ...mapGetters(["getUserName", "getWindow"]),
+        Is(){
+            if(this.getWindow === 'myOrder'){
+                this.getOrder();
+            }
+            return this.getWindow === 'myOrder';
+        }
     },
     methods:{
         //获取订单信息
@@ -48,6 +55,7 @@ export default{
             try{
                 const response = await axios.get('/api/getAllOrder?uname='+this.getUserName);
                 this.orders = response.data;
+                console.log(response.data);
             }catch(error){
                 console.error('获取订单出错',error)
             }
@@ -72,7 +80,7 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
 .container1 {
   margin-top: 20px;
 }
