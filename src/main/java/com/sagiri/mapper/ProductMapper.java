@@ -11,4 +11,5 @@ public interface ProductMapper {
     List<Product>selectProductsByKeyword(String keyword);
     Product selectProductById(int pid);
     int updatePSalesByPID(Product product);
+    int updatePInventoryByPID(Product product);
 }

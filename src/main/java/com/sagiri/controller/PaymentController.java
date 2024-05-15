@@ -45,12 +45,12 @@ public class PaymentController {
         int pid;
         int aid;
         float pPice;
-        int sNum;
+        long sNum;
         String uname;
     }
     @RequestMapping(value = "/addPayment", method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public void addPayment(HttpServletRequest req){
+    public String addPayment(HttpServletRequest req) throws JsonProcessingException {
         StringBuilder buffer = new StringBuilder();
         String line;
         try (BufferedReader reader = req.getReader()) {
@@ -65,6 +65,15 @@ public class PaymentController {
         // 使用JSON库解析数据
         Gson gson = new Gson();
         Payload payload = gson.fromJson(data, Payload.class);
+
+        ProductService productService=new ProductService();
+        Product product1 = productService.getProductByPId(payload.pid);
+        // 判断库存是否充足
+        Boolean isSuccess = payload.sNum > product1.getPInventory();
+
+        if(isSuccess){
+            payload.sNum = product1.getPInventory();
+        }
 
         UserService userService=new UserService();
         User user = userService.getUser(payload.uname);
@@ -81,13 +90,21 @@ public class PaymentController {
         Product product = new Product();
         product.setPid(payload.pid);
         product.setPSales(payload.sNum);
-
-        ProductService productService = new ProductService();
+        product.setPInventory(payload.sNum);
 
         productService.updatePSalesByPID(product);
+        productService.updatePInventoryByPID(product);
 
         PaymentService paymentService=new PaymentService();
         paymentService.insertPayment(payment);
+
+        if (isSuccess){
+            PFailed pFailed = new PFailed(product1.getPName(), payload.sNum);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(pFailed);
+        }else{
+            return "success";
+        }
     }
 
     @RequestMapping(value = "/deleteShoppingCart",produces = "text/html;charset=UTF-8")

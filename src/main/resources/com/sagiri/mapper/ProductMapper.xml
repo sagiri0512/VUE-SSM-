@@ -36,4 +36,10 @@
         WHERE PID = #{pid}
     </update>
 
+    <update id="updatePInventoryByPID" parameterType="com.sagiri.pojo.Product">
+            UPDATE product
+            SET PInventory = PInventory - #{pInventory}
+            WHERE PID = #{pid}
+    </update>
+
 </mapper>

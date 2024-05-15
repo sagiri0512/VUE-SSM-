@@ -28,4 +28,7 @@ public class ProductService {
     public int updatePSalesByPID(Product product) {
         return productDao.updatePSalesByPID(product);
     }
+    public int updatePInventoryByPID(Product product){
+        return productDao.updatePInventoryByPID(product);
+    }
 }

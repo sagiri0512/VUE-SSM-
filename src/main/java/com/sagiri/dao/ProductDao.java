@@ -87,4 +87,16 @@ public class ProductDao {
             return 0;
         }
     }
+    public int updatePInventoryByPID(Product product){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        ProductMapper productMapper = sqlSession.getMapper(ProductMapper.class);
+        try {
+            int i = productMapper.updatePInventoryByPID(product);
+            sqlSession.commit();
+            sqlSession.close();
+            return i;
+        }catch (Exception e){
+            return 0;
+        }
+    }
 }

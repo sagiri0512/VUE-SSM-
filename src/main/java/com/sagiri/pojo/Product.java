@@ -10,6 +10,7 @@ public class Product {
   private long pSales;
   private long tid;
   private String pIntroduce;
+  private long pInventory;
 
 
   public long getPid() {
@@ -72,6 +73,15 @@ public class Product {
 
   public void setPIntroduce(String pIntroduce) {
     this.pIntroduce = pIntroduce;
+  }
+
+
+  public long getPInventory() {
+    return pInventory;
+  }
+
+  public void setPInventory(long pInventory) {
+    this.pInventory = pInventory;
   }
 
 }
