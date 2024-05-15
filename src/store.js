@@ -8,6 +8,7 @@ const store = createStore({
     search:'',//搜索框内容
     pid:'',//详细页商品id
     window:'home',//进入哪个页面
+    pids:[],//
   },
   
   mutations: {
@@ -26,6 +27,9 @@ const store = createStore({
     updateWindow(state, newValue){
       state.window = newValue;
     },
+    setSelectedPids(state, newValue){
+      state.pids = newValue;
+    },
   },
   getters: {
     getNum: (state) => {
@@ -43,6 +47,9 @@ const store = createStore({
     getWindow: (state) => {
       return state.window;
     },
+    getSelectedPids: (state) => {
+      return state.pids;
+    }
   }
 });
 

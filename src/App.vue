@@ -12,67 +12,60 @@
         <li @click="toPage('home')">主页</li>
         <li @click="toPage('allProduct')">全部商品</li>
         <li @click="toPage('myOrder')">我的订单</li>
-        <li
-          :class="getNum > 0 ? 'shopCart-full' : 'shopCart'"
-          @click="toPage('shoppingCart')"
-        >
-          <img class="img" src="./assets/shopping.png" v-if="getNum > 0" />
-          <img class="img" src="./assets/shopping1.png" v-else />
+        <li :class="getNum > 0 ? 'shopCart-full' : 'shopCart'" @click="toPage('shoppingCart')">
+          <img class="img" src="./assets/shopping.png" v-if="getNum > 0"/>
+          <img class="img" src="./assets/shopping1.png" v-else>
           购物车
-          <span class="num">({{ getNum }})</span>
+          <span class="num">({{getNum}})</span>
         </li>
       </ul>
     </div>
     <!-- 顶端导航END -->
-    <div style="width: 80%; margin-left: 10%">
-      <!-- 顶端容器 -->
+    <div style="width: 80%; margin-left: 10%;">
+    <!-- 顶端容器 -->
       <div v-if="getUserName !== ''">
         <ul class="topViewUl">
-          <li class="topViewLiLeft"><img src="./assets/logo.png" /></li>
+          <li class="topViewLiLeft"><img src="./assets/logo.png"></li>
           <li class="topViewLiRight">
-            <input
-              class="topViewInput"
-              type="text"
-              placeholder="请输入搜索内容"
-              v-model.lazy="search"
-              @keyup.enter="searchProduct"
-            />
+            <input class="topViewInput" type="text" placeholder = "请输入搜索内容" v-model.lazy="search" @keyup.enter="searchProduct  ">
             <button class="topViewButton" @click="searchProduct">搜索</button>
           </li>
         </ul>
       </div>
     </div>
-    <!-- 顶端容器END -->
-    <!-- 根据用户登录状态和当前窗口状态渲染不同的页面组件 -->
-    <HelloWorld style="height: 92.5vh" v-if="getUserName === ''" />
-    <div style="width: 80%; margin-left: 10%" v-else-if="getUserName !== ''">
+      <!-- 顶端容器END -->
+      <!-- 根据用户登录状态和当前窗口状态渲染不同的页面组件 -->
+    <HelloWorld style="height: 92.5vh;" v-if="getUserName === ''" />
+    <div style="width: 80%; margin-left: 10%;" v-else-if="getUserName !== ''" >
       <HomePageVue v-if="getWindow === 'home'" />
-      <ShoppingCart v-else-if="getWindow === 'shoppingCart'"></ShoppingCart>
-      <MyOrderPageVue v-else-if="getWindow === 'myOrder'" />
-      <AllProductPageVue v-else-if="getWindow === 'allProduct'" />
-      <DetailPage v-else-if="getWindow === 'detail'" />
-      <UserInfoPageVue v-else-if="getWindow === 'info'" />
+      <ShoppingCart v-else-if="getWindow === 'shoppingCart'" ></ShoppingCart>
+      <MyOrderPageVue v-else-if="getWindow === 'myOrder'"/>
+      <AllProductPageVue v-else-if="getWindow === 'allProduct'"/>
+      <DetailPage v-else-if="getWindow === 'detail'"/>
+      <UserInfoPageVue v-else-if="getWindow === 'info'"/>
+      <PaymentPage v-else-if="getWindow === 'payment'" />
     </div>
   </div>
   <div v-if="iSs"></div>
 </template>
 
 <script>
-import ShoppingCart from "./components/ShoppingCart.vue";
-import MyOrderPageVue from "./components/MyOrderPage.vue";
-import HelloWorld from "./components/HelloWorld.vue";
-import HomePageVue from "./components/HomePage.vue";
-import { mapState, mapGetters } from "vuex";
-import AllProductPageVue from "./components/AllProductPage.vue";
-import DetailPage from "./components/DetailPage.vue";
-import UserInfoPageVue from "./components/UserInfoPage.vue";
-import axios from "axios";
+import ShoppingCart from './components/ShoppingCart.vue';
+import MyOrderPageVue from './components/MyOrderPage.vue';
+import HelloWorld from './components/HelloWorld.vue';
+import HomePageVue from './components/HomePage.vue';
+import {mapState, mapGetters } from 'vuex';
+import AllProductPageVue from './components/AllProductPage.vue';
+import DetailPage from './components/DetailPage.vue';
+import UserInfoPageVue from './components/UserInfoPage.vue';
+import PaymentPage from './components/PaymentPage.vue';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       //该页面变量
-      search: "", //搜索框内容
+      search:'',//搜索框内容
     };
   },
   components: {
@@ -84,50 +77,40 @@ export default {
     AllProductPageVue,
     DetailPage,
     UserInfoPageVue,
+    PaymentPage,
   },
   computed: {
-    ...mapState(["userName"]), // 将 Vuex 中的 state.userName 映射到组件的 userName
-    ...mapGetters([
-      "getUserName",
-      "getNum",
-      "getSearch",
-      "getPid",
-      "getWindow",
-      "getWs",
-    ]), // 将 Vuex 中的 getter 映射到组件的计算属性中
-    iSs() {
-      if (this.getUserName !== "") {
+    ...mapState(['userName']), // 将 Vuex 中的 state.userName 映射到组件的 userName
+    ...mapGetters(['getUserName', 'getNum', 'getSearch', 'getPid', 'getWindow']), // 将 Vuex 中的 getter 映射到组件的计算属性中
+    iSs(){
+      if(this.getUserName !== ''){
         this.updateNum();
-      } else {
-        this.$store.commit("updateNum", 0);
       }
-      return this.getUserName !== "";
-    },
+      return this.getUserName !== '';
+    }
   },
   mounted() {
-    
+
   },
   methods: {
     toPage(window) {
-      if (this.getUserName === "") {
-        alert("请先登录！");
-      } else {
-        this.$store.commit("updateWindow", window);
-        this.$store.commit("updateSearch", "");
-        this.$store.commit("updatePid", "");
+      if(this.getUserName === ''){
+        alert("请先登录！")
+      }else{
+        this.$store.commit('updateWindow', window);
+        this.$store.commit('updateSearch', '');
+        this.$store.commit('updatePid', '');
       }
     },
-    searchProduct() {
-      this.$store.commit("updateSearch", this.search);
-      this.$store.commit("updateWindow", "allProduct");
-      this.search = "";
+    searchProduct(){
+      this.$store.commit('updateSearch', this.search);
+      this.$store.commit('updateWindow', 'allProduct');
+      this.search = '';
     },
-    async updateNum() {
-      if (this.getUserName !== "") {
-        const num = (
-          await axios.get("/api//getSumOfSNumByUid?uname=" + this.getUserName)
-        ).data;
-        this.$store.commit("updateNum", num);
+    async updateNum(){
+      if(this.getUserName !== ''){
+        const num = (await axios.get('/api//getSumOfSNumByUid?uname=' + this.getUserName)).data;
+        this.$store.commit('updateNum', num);
       }
     },
   },
@@ -136,7 +119,7 @@ export default {
 
 <style scoped>
 /* scoped 表示此样式只在当前组件中生效 */
-ul {
+ul{
   list-style-type: none;
 }
 
@@ -160,32 +143,32 @@ ul {
 }
 
 .topbar li {
-  height: 100%;
-  color: #b0b0b0;
-  font-size: 14px;
-  margin-left: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    height: 100%;
+    color: #b0b0b0;
+    font-size: 14px;
+    margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
 }
 /* 购物车空 */
-.topbar .shopCart {
+.topbar  .shopCart {
   width: 120px;
 }
 /* 鼠标悬停在购物车上 */
-.topbar .shopCart:hover {
+.topbar  .shopCart:hover {
   background: #fff;
 }
-.topbar .shopCart-full:hover {
+.topbar  .shopCart-full:hover {
   background: #fff;
 }
 /* 购物车内有物品 */
-.topbar .shopCart-full {
+.topbar  .shopCart-full {
   width: 120px;
   color: #ff6700;
 }
 /* 购物车图片 */
-.topbar .img {
+.topbar  .img{
   width: 14px;
   height: 14px;
 }
@@ -197,7 +180,7 @@ ul {
   margin: 0;
   overflow: hidden; /* 清除浮动 */
 }
-.topViewLiLeft {
+.topViewLiLeft{
   float: left; /* 左浮动使得第一个 li 靠左 */
 }
 .topViewLiRight {
