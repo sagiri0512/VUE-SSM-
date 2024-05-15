@@ -17,6 +17,7 @@
                         <img :src="product.pimg" alt="Product Image" style="width: 80%;">
                         <p style="font-size: 30px;">{{ product.pname }}</p>
                         <p class="product-price">价格:¥{{ product.pprice }}</p>
+                        <p class="product-pInventory">库存:{{ product.pinventory }}</p>
                     </li>
                 </ul>
             </div>    
@@ -91,6 +92,10 @@
         width: 96.5%;
     }
 
+    .product-pInventory {
+        font-size: 15px;
+        text-align: right;
+    }
     .product-list {
         display: flex;
         flex-wrap: wrap;

@@ -38,6 +38,7 @@
           <img :src="product.pimg" alt="Product Image" style="width: 80%" />
           <p style="font-size: 30px">{{ product.pname }}</p>
           <p class="product-price">价格:¥{{ product.pprice }}</p>
+          <p class="product-pInventory">库存:{{ product.pinventory }}</p>
         </li>
       </ul>
     </div>
@@ -190,6 +191,11 @@ ul {
   text-align: left;
   margin-left: 10px; /* 调整价格文字左边距 */
   margin-top: 10px;
+}
+
+.product-pInventory {
+  font-size: 15px;
+  text-align: right;
 }
 /* 商品展示END */
 /* 没有商品消息样式 */

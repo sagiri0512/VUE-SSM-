@@ -151,7 +151,10 @@ export default {
             pPice: item.pPrice,
             sNum: item.sNum,
           };
-          await axios.post("/api/addPayment", payload);
+          const response = await axios.post("/api/addPayment", payload);
+          if (response.data !== "success") {
+            alert(response.data.name + "库存不足，该商品已购买" + response.data.sum + "，并已从购物车中删除！本商品需付款" + response.data.sum * payload.pPice + "元");
+          }
         }
         for (let i = 0; i < this.ProductInfo.length; i++) {
           const item = this.ProductInfo[i][0];

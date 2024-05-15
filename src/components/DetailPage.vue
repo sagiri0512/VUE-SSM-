@@ -15,6 +15,7 @@
         <li ><strong class="product-name">商品名</strong><p style="text-align: center; font-size: 20px; color: orange;font-weight: bold;">{{ product && product.pname }}</p></li>
         <li class="product-introduce"><strong>商品介绍</strong><br>{{ product && product.pintroduce }}</li>
         <li style="color: green; font-size: 30px; margin-top: 40px;">¥{{ product && product.pprice ? product.pprice.toFixed(2) : '0.00' }}</li>
+        <li ><strong>库存：</strong>{{ product && product.pinventory }}</li>
       </ul>
       <button @click="addToCart" class="add-to-cart-btn">加入购物车</button>
     </div>
