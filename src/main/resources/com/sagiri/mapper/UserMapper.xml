@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sagiri.mapper.UserMapper">
+<!--    查全部信息-->
+    <select id="selectUserByUName" resultType="com.sagiri.pojo.User">
+        SELECT * FROM user WHERE UName = #{uName}
+    </select>
+
+    <insert id="addUser" parameterType="com.sagiri.pojo.User">
+        INSERT INTO user(UName,Upwd) VALUES(#{uName},#{upwd})
+    </insert>
+
+    <select id="getUserInfo" resultType="com.sagiri.pojo.User">
+        SELECT * FROM user WHERE UName = #{uName}
+    </select>
+    
+    <update id="phoneChange" parameterType="com.sagiri.pojo.User">
+        UPDATE user SET UPhoneNmber = #{uPhoneNmber} WHERE UName = #{uName}
+    </update>
+
+    <update id="emailChange" parameterType="com.sagiri.pojo.User">
+        UPDATE user SET UMailBox = #{uMailBox} WHERE UName = #{uName}
+    </update>
+
+    <update id="pwdChange" parameterType="com.sagiri.pojo.User">
+        UPDATE user SET Upwd = #{upwd} WHERE UName = #{uName}
+    </update>
+
+    <update id="updateUserNickNameByUname" parameterType="com.sagiri.pojo.User">
+        UPDATE user SET UNickName = #{uNickName} WHERE UName = #{uName}
+    </update>
+
+    <update id="updateUserAgeByUName" parameterType="com.sagiri.pojo.User">
+        UPDATE user SET Uage = #{uage} WHERE UName = #{uName}
+    </update>
+
+    <update id="updateUserSexByUName" parameterType="com.sagiri.pojo.User">
+        UPDATE user SET Usex = #{usex} WHERE UName = #{uName}
+    </update>
+</mapper>

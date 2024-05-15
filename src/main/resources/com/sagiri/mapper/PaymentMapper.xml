@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sagiri.mapper.PaymentMapper">
+    <!--查询地址信息-->
+    <select id="selectAddress" parameterType="com.sagiri.pojo.Address" resultType="com.sagiri.pojo.Address">
+        select * from address where uid = #{uid} and did=#{did}
+    </select>
+    <!--将结算页面的信息插入数据库-->
+    <insert id="insertPayment" parameterType="com.sagiri.pojo.Payment">
+        insert into payment(uid,payprice,aid,number,pid) values (#{uid},#{payPrice},#{aid},#{number},#{pid})
+    </insert>
+    <!--提交订单后删除购物车内容-->
+    <delete id="deleteShoppingCart" parameterType="com.sagiri.pojo.ShoppingCart">
+        delete from shoppingcart where uid=#{uid} and pid=#{pid}
+    </delete>
+    <!--先清空所有的did,然后将选中的设置为1-->
+    <update id="clearAll">
+        update address set did=0
+    </update>
+    <update id="setDid" parameterType="com.sagiri.pojo.Address">
+        update address set did=1 where aid=#{aid}
+    </update>
+</mapper>

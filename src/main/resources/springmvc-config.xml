@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+<!--    配置处理器Handler，处理请求-->
+<!--    <bean name="/firstController" class="com.sagiri.controller.FirstController"/>-->
+
+<!--    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>-->
+<!--&lt;!&ndash;    处理器适配器&ndash;&gt;-->
+<!--    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>-->
+
+<!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>-->
+
+<!--    注解开发-->
+    <context:component-scan base-package="com.sagiri.controller"/>
+<!--    视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5242880"/>
+        <property name="defaultEncoding" value="GBK"/>
+    </bean>
+
+</beans>

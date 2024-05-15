@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sagiri.mapper.ShoppingCartMapper">
+
+    <insert id="addShoppingCart" parameterType="com.sagiri.pojo.ShoppingCart">
+        INSERT INTO shoppingcart(UID,PID,SNum) VALUES(#{uid}, #{pid}, #{sNum})
+    </insert>
+
+    <update id="ShoppingCartSNumAdd" parameterType="com.sagiri.pojo.ShoppingCart">
+        UPDATE shoppingcart SET SNum = SNum + 1 WHERE UID = #{uid} AND PID = #{pid}
+    </update>
+
+    <select id="selectShoppingCartByPidAndUid" parameterType="com.sagiri.pojo.ShoppingCart" resultType="com.sagiri.pojo.ShoppingCart">
+        SELECT * FROM shoppingcart WHERE UID = #{uid} AND PID = #{pid}
+    </select>
+
+    <select id="selectSumOfSNumByUid" parameterType="long" resultType="int">
+        SELECT SUM(SNum) FROM shoppingcart WHERE UID = #{uid}
+    </select>
+    <select id="selectShoppingCartByUid" parameterType="com.sagiri.pojo.ShoppingProduct" resultType="com.sagiri.pojo.ShoppingProduct">
+        SELECT * FROM shoppingcart,product WHERE uid=#{uid} AND shoppingcart.pid=product.pid
+    </select>
+    <delete id="deleteShoppingCartById" parameterType="com.sagiri.pojo.ShoppingCart">
+        delete from shoppingCart where pid=#{pid} and uid=#{uid}
+    </delete>
+    <update id="updateNum" parameterType="com.sagiri.pojo.ShoppingCart">
+        update shoppingcart set sNum=#{sNum} where uid=#{uid} and pid=#{pid}
+    </update>
+    <!--根据获取到的pid和uid查询-->
+    <select id="selectShoppingCartById" parameterType="com.sagiri.pojo.ShoppingProduct" resultType="com.sagiri.pojo.ShoppingProduct">
+        SELECT * FROM shoppingcart,product WHERE uid=#{uid} AND shoppingcart.pid=product.pid and shoppingcart.pid=#{pid}
+    </select>
+</mapper>
