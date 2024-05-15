@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class ShoppingCartDao {
+public class    ShoppingCartDao {
     static SqlSessionFactory sqlSessionFactory;
 
     public ShoppingCartDao() {

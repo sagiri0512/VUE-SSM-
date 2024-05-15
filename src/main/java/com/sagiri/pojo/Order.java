@@ -10,9 +10,10 @@ public class Order {
     private double payPrice;
     private String atext;
     private String aname;
-    private String aphonenumber;
+    private String aPhonenNmber;
     private String pname;
     private long state;
+
 
     public long getState() {
         return state;
@@ -95,11 +96,11 @@ public class Order {
     }
 
     public String getAphonenumber() {
-        return aphonenumber;
+        return aPhonenNmber;
     }
 
     public void setAphonenumber(String aphonenumber) {
-        this.aphonenumber = aphonenumber;
+        this.aPhonenNmber = aphonenumber;
     }
 
     public String getPname() {
