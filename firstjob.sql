@@ -34,9 +34,6 @@ CREATE TABLE `address` (
 
 /*Data for the table `address` */
 
-insert  into `address`(`AID`,`UID`,`AText`,`APhonenNmber`,`AName`,`Did`) values 
-(1,1,'江苏南京','12121212121','sagiri',0);
-
 /*Table structure for table `carousel` */
 
 DROP TABLE IF EXISTS `carousel`;
@@ -104,31 +101,9 @@ CREATE TABLE `payment` (
   CONSTRAINT `payment_address_AID` FOREIGN KEY (`AID`) REFERENCES `address` (`AID`),
   CONSTRAINT `payment_product_PID` FOREIGN KEY (`PID`) REFERENCES `product` (`PID`),
   CONSTRAINT `payment_user_UID` FOREIGN KEY (`UID`) REFERENCES `user` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `payment` */
-
-insert  into `payment`(`PAID`,`UID`,`PayPrice`,`AID`,`PID`,`Number`,`State`) values 
-(5,1,3,1,2,1,1),
-(6,1,10,1,3,2,1),
-(7,1,50,1,3,10,1),
-(8,1,20,1,1,10,1),
-(9,1,20,1,1,10,1),
-(10,1,30,1,2,10,1),
-(11,1,3,1,2,1,1),
-(12,1,2,1,5,1,0),
-(13,1,2,1,1,1,0),
-(14,1,3,1,2,1,0),
-(15,1,198,1,1,99,0),
-(16,1,9,1,2,3,0),
-(17,1,285,1,2,95,0),
-(18,1,198,1,5,99,0),
-(19,1,20,1,1,10,0),
-(20,1,40,1,3,8,0),
-(21,1,5,1,3,1,0),
-(22,1,5,1,3,1,0),
-(23,1,5,1,3,1,0),
-(24,1,5,1,3,1,0);
 
 /*Table structure for table `product` */
 
@@ -154,7 +129,7 @@ insert  into `product`(`PID`,`PName`,`PPrice`,`PImg`,`PSales`,`TID`,`PIntroduce`
 (1,'梨(一个)',2,'https://sagirinoinu.top/img/product/pear/pear.png',110,1,'梨是一种口感柔软、多汁甜美的水果，外皮通常呈现出绿色、黄色或红色。梨富含维生素C和纤维，有助于促进消化和维持健康。它可以生吃，也可用于烹饪和制作果汁。在烹饪中，梨可用来制作甜点、沙拉或果酱，与奶酪搭配也颇受喜爱。为了保持梨的新鲜度，应选择外观完整、无瑕疵的果实，并储存于阴凉通风处。总之，梨是一种美味多用途的水果，不仅口感可口，而且营养丰富，适合作为健康的零食或烹饪食材。',0),
 (2,'可口可乐(一罐)',3,'https://sagirinoinu.top/img/product/coca-cola/coca-cola.png',100,2,'可口可乐是一种含有气泡的软饮料，以其甜味和爽口感闻名。它的主要成分包括碳酸水、高果糖玉米糖浆（或蔗糖）、焦糖色素、香料和咖啡因。这些成分使得可口可乐有了独特的口味，略带甜味但不过分甜腻，让人回味无穷。',0),
 (3,'茄皇(一桶)',5,'https://sagirinoinu.top/img/product/qiehuang/qiehuang.png',22,3,'茄皇泡面是一种以番茄为主要风味的方便面，口感酸甜可口。制作简便，将面条煮熟后加入番茄调味料包即可享用。茄皇泡面受到许多人的喜爱，成为快捷美食选择之一。选择时可根据口味偏好和配料选择不同款式。',88),
-(4,'雪碧(一罐)',3,'https://sagirinoinu.top/img/product/sprite/sprite.png',0,2,'雪碧是一种知名的碳酸饮料，以清爽的柠檬-莱姆味而闻名。它的口感清凉、气泡丰富，带有微甜的味道，成为许多人喜爱的饮品之一。雪碧是无咖啡因的，适合任何时候饮用。它可单独饮用，也可用于调制鸡尾酒。雪碧有许多不同的包装和口味变种，如经典雪碧、雪碧无糖和其他水果口味。总的来说，雪碧是一种受欢迎的碳酸饮料，适合在休闲时享用，给人带来清新爽口的口感体验。',100),
+(4,'雪碧(一罐)',3,'https://sagirinoinu.top/img/product/sprite/sprite.png',1,2,'雪碧是一种知名的碳酸饮料，以清爽的柠檬-莱姆味而闻名。它的口感清凉、气泡丰富，带有微甜的味道，成为许多人喜爱的饮品之一。雪碧是无咖啡因的，适合任何时候饮用。它可单独饮用，也可用于调制鸡尾酒。雪碧有许多不同的包装和口味变种，如经典雪碧、雪碧无糖和其他水果口味。总的来说，雪碧是一种受欢迎的碳酸饮料，适合在休闲时享用，给人带来清新爽口的口感体验。',99),
 (5,'苹果(一个)',2,'https://sagirinoinu.top/img/product/apple/apple.png',100,1,'苹果是一种常见且广受喜爱的水果，有多种品种如富士、红星、嘎拉等。苹果外皮光滑，呈现不同颜色，如红、黄、绿等。果肉细腻多汁，口感清脆或软糯取决于品种。它富含维生素C、纤维和抗氧化剂，有助于增强免疫力和消化系统健康。苹果可生食，也可用于烹饪，如制作果酱、沙拉或烘焙食品。选择苹果时，应选外观完整、无软烂或明显划伤的果实。存放时避免阳光直射，可延长保鲜时间。总的来说，苹果是一种营养丰富、口感美味的水果，适合作为健康的零食或用于各种美食烹饪中。',0);
 
 /*Table structure for table `shoppingcart` */
@@ -171,7 +146,7 @@ CREATE TABLE `shoppingcart` (
   KEY `shoppingcart_user_UID` (`UID`),
   CONSTRAINT `shoppingcart_product_PID` FOREIGN KEY (`PID`) REFERENCES `product` (`PID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `shoppingcart_user_UID` FOREIGN KEY (`UID`) REFERENCES `user` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `shoppingcart` */
 
