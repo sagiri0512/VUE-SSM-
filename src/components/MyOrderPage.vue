@@ -41,12 +41,10 @@ export default{
         this.getOrder();
     },
     computed:{
-        ...mapGetters(["getUserName", "getWindow"]),
+        ...mapGetters(["getUserName", "getWindow", "getNum"]),
         Is(){
-            if(this.getWindow === 'myOrder'){
-                this.getOrder();
-            }
-            return this.getWindow === 'myOrder';
+            this.getOrder();
+            return this.getNum;
         }
     },
     methods:{

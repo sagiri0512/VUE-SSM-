@@ -113,19 +113,23 @@ export default {
     async Settlement() {
       this.$store.commit("updateWindow", "myOrder");
       if (this.selectedAddress) {
-        for (const item of this.ProductInfo) {
+        for (let i = 0; i < this.ProductInfo.length; i++) {
           const payload = {
             uname: this.getUserName,
             aid: this.selectedAddress.aid,
-            pid: item[0].pid,
-            pPice: item[0].pPrice,
-            sNum: item[0].sNum,
+            pid: this.ProductInfo[i][0].pid,
+            pPice: this.ProductInfo[i][0].pPrice,
+            sNum: this.ProductInfo[i][0].sNum,
           };
-          await axios.post("/api/addPayment", payload);
+          const response = await axios.post("/api/addPayment", payload);
+          if(response.data !== "success"){
+            alert(response.data.name + "库存不足，已购买" + response.data.sum + "，该商品应支付" + response.data.sum*this.ProductInfo[i][0].pPrice + "元");
+          }
         }
         for (const item of this.ProductInfo) {
           try {
             await axios.get("/api/deleteShoppingCart", { params: { uname: this.getUserName, pid: item[0].pid } });
+            console.log(this.getTotalNum);
             this.$store.commit("updateNum", this.getNum - this.getTotalNum);
           } catch (error) {
             console.error("删除购物车商品时出错:", error);
