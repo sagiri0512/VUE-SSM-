@@ -228,6 +228,14 @@ public class UserController {
         String fileName = uid + ".png";
         String filePath = "/www/wwwroot/sagirinoinu.top/firstjob/public/images/" + fileName;
 
+        User user = new User();
+        String head = "images/" + fileName;
+        user.setUHeadImage(head);
+        user.setUid(uid);
+
+        UserService userService = new UserService();
+
+        userService.updateUserHeadByUID(user);
         try {
             // 将上传文件保存到目标文件
             dropzFile.transferTo(new File(filePath));

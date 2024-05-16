@@ -40,4 +40,8 @@
     <update id="updateUserSexByUName" parameterType="com.sagiri.pojo.User">
         UPDATE user SET Usex = #{usex} WHERE UName = #{uName}
     </update>
+
+    <update id="updateUserHeadByUID" parameterType="com.sagiri.pojo.User">
+        UPDATE user SET UHeadImage = #{uHeadImage} WHERE UID = #{uid}
+    </update>
 </mapper>

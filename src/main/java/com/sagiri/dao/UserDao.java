@@ -135,5 +135,17 @@ public class UserDao {
             return 0;
         }
     }
+    public int updateUserHeadByUID(User user){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        try {
+            int i = userMapper.updateUserHeadByUID(user);
+            sqlSession.commit();  // 提交事务
+            sqlSession.close();
+            return i;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 }
 

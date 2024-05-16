@@ -13,4 +13,6 @@ public interface UserMapper {
     int updateUserNickNameByUname(User user);
     int updateUserAgeByUName(User user);
     int updateUserSexByUName(User user);
+
+    int updateUserHeadByUID(User user);
 }

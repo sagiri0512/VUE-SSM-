@@ -69,6 +69,11 @@ public class PaymentController {
         ProductService productService=new ProductService();
         Product product1 = productService.getProductByPId(payload.pid);
         // 判断库存是否充足
+        if(product1.getPInventory() == 0){
+            PFailed pFailed = new PFailed(product1.getPName(), 0);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(pFailed);
+        }
         Boolean isSuccess = payload.sNum > product1.getPInventory();
 
         if(isSuccess){

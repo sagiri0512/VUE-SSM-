@@ -42,4 +42,7 @@ public class UserService {
     public int updateUserSexByUName(User user){
         return userDao.updateUserSexByUName(user);
     }
+    public int updateUserHeadByUID(User user){
+        return userDao.updateUserHeadByUID(user);
+    }
 }
