@@ -150,7 +150,7 @@ export default {
         this.window = 'login';
         this.user.checkCode = '';
       } else if(response.data == '0'){
-        console.log('用户已存在！');
+        alert('用户已存在！');
           
       }else if(response.data == '2'){
         alert("验证码错误！")
