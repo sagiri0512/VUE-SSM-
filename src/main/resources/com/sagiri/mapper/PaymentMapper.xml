@@ -20,6 +20,7 @@
     <update id="clearAll">
         update address set did=0
     </update>
+
     <update id="setDid" parameterType="com.sagiri.pojo.Address">
         update address set did=1 where aid=#{aid}
     </update>

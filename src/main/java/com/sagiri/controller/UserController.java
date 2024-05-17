@@ -226,7 +226,7 @@ public class UserController {
     @ResponseBody
     public void upload(@RequestParam("selectedFile") MultipartFile dropzFile, @RequestParam("uid") long uid, HttpServletResponse resp) throws IOException {
         String fileName = uid + ".png";
-        String filePath = "/www/wwwroot/sagirinoinu.top/firstjob/public/images/" + fileName;
+        String filePath = "D:\\vue\\firstjob\\public\\images\\" + fileName;
 
         User user = new User();
         String head = "images/" + fileName;

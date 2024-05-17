@@ -6,9 +6,14 @@
 <mapper namespace="com.sagiri.mapper.OrderMapper">
     <!--查询所有-->
     <select id="selectAll" parameterType="com.sagiri.pojo.Order" resultType="com.sagiri.pojo.Order">
-        SELECT * FROM product,address,payment WHERE
-        product.pid=payment.pid AND payment.aid=address.aid AND address.uid=payment.uid AND address.uid=#{uid}
+        SELECT * FROM product, address, payment
+        WHERE product.pid = payment.pid
+          AND payment.aid = address.aid
+          AND address.uid = payment.uid
+          AND address.uid = #{uid}
+        ORDER BY payment.paid ASC
     </select>
+
     <!--修改收获状态-->
     <update id="updateState" parameterType="com.sagiri.pojo.Order">
         update payment set state=1 where paid=#{paid}
